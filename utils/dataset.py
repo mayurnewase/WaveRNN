@@ -33,6 +33,7 @@ class VocoderDataset(Dataset):
 
 
 def get_vocoder_datasets(path: Path, batch_size, train_gta):
+    batch_size = 1
 
     with open(path/'dataset.pkl', 'rb') as f:
         dataset = pickle.load(f)
@@ -45,13 +46,16 @@ def get_vocoder_datasets(path: Path, batch_size, train_gta):
     test_ids = dataset_ids[-hp.voc_test_samples:]
     train_ids = dataset_ids[:-hp.voc_test_samples]
 
+    print("train ids ", train_ids)
+    print("test ids ", test_ids)
+
     train_dataset = VocoderDataset(path, train_ids, train_gta)
     test_dataset = VocoderDataset(path, test_ids, train_gta)
 
     train_set = DataLoader(train_dataset,
                            collate_fn=collate_vocoder,
                            batch_size=batch_size,
-                           num_workers=2,
+                           num_workers=1,
                            shuffle=True,
                            pin_memory=True)
 
@@ -192,6 +196,8 @@ def collate_tts(batch, r):
 
 class BinnedLengthSampler(Sampler):
     def __init__(self, lengths, batch_size, bin_size):
+        bin_size =1
+        batch_size = 1
         _, self.idx = torch.sort(torch.tensor(lengths).long())
         self.batch_size = batch_size
         self.bin_size = bin_size
@@ -209,6 +215,7 @@ class BinnedLengthSampler(Sampler):
             bins += [this_bin]
 
         random.shuffle(bins)
+        print("-------bins shape is ", len(bins))
         binned_idx = np.stack(bins).reshape(-1)
 
         if len(binned_idx) < len(idx):
