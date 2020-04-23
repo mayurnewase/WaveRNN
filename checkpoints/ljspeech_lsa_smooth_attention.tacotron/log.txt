@@ -1,1 +1,0 @@
-| Epoch: 1/10001 (1/1) | Loss: 4.887 | 0.33 steps/s | Step: 0k | 
