@@ -2,8 +2,8 @@
 # CONFIG -----------------------------------------------------------------------------------------------------------#
 
 # Here are the input and output data paths (Note: you can override wav_path in preprocess.py)
-wav_path = '/home/mayur/projects/WaveRNN/dataset/lj_speech_dataset'
-data_path = '/home/mayur/projects/WaveRNN/dataset/wavernn_preprocess_output'
+wav_path = '/root/WaveRNN/dataset/lj_speech_dataset'
+data_path = '/root/WaveRNN/dataset/wavernn_preprocess_output'
 
 # model ids are separate - that way you can use a new tts with an old wavernn and vice versa
 # NB: expect undefined behaviour if models were trained on different DSP settings
