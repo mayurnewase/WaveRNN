@@ -62,6 +62,9 @@ def save_checkpoint(checkpoint_type: str, paths: Paths, model, optimizer, *,
         if not is_silent: print(f'Saving {s} optimizer state: {path_dict["o"]}')
         torch.save(optimizer.state_dict(), path_dict['o'])
 
+        model.save("/content/drive/My Drive/Wavenet Training/model.pyt")
+        torch.save(optimizer.state_dict(), "/content/drive/My Drive/Wavenet Training/optim.pyt")
+        
     weights_path, optim_path, checkpoint_path = \
         get_checkpoint_paths(checkpoint_type, paths)
 
