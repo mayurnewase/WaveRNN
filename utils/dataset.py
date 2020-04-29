@@ -33,17 +33,17 @@ class VocoderDataset(Dataset):
 
 
 def get_vocoder_datasets(path: Path, batch_size, train_gta):
-    batch_size = 1
+    batch_size = 10
 
     with open(path/'dataset.pkl', 'rb') as f:
         dataset = pickle.load(f)
 
     dataset_ids = [x[0] for x in dataset]
 
-    random.seed(1234)
-    random.shuffle(dataset_ids)
+    #random.seed(1234)
+    #random.shuffle(dataset_ids)
 
-    train_ids = ['LJ001-0002']
+    train_ids = dataset_ids[:-2]
     test_ids = train_ids
     
     print("train ids ", train_ids)
