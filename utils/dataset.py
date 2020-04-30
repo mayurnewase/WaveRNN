@@ -33,7 +33,6 @@ class VocoderDataset(Dataset):
 
 
 def get_vocoder_datasets(path: Path, batch_size, train_gta):
-    batch_size = 10
 
     with open(path/'dataset.pkl', 'rb') as f:
         dataset = pickle.load(f)
