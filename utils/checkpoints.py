@@ -79,7 +79,7 @@ def save_checkpoint(checkpoint_type: str, paths: Paths, model, optimizer, *, mod
         helper(named_paths, True)
 
 
-def restore_checkpoint(checkpoint_type: str, paths: Paths, model, optimizer, *,
+def restore_checkpoint(checkpoint_type: str, paths: Paths, model, optimizer, *,model_type,
         name=None, create_if_missing=False):
     """Restores from a training session saved to disk.
 
@@ -126,6 +126,6 @@ def restore_checkpoint(checkpoint_type: str, paths: Paths, model, optimizer, *,
         print(f'Loading {s} optimizer state: {path_dict["o"]}')
         optimizer.load_state_dict(torch.load(path_dict['o']))
     elif create_if_missing:
-        save_checkpoint(checkpoint_type, paths, model, optimizer, name=name, is_silent=False)
+        save_checkpoint(checkpoint_type, paths, model, optimizer, name=name, is_silent=False, model_type=model_type)
     else:
         raise FileNotFoundError(f'The {s} checkpoint could not be found!')
