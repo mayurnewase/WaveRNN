@@ -143,14 +143,14 @@ def voc_train_loop(paths: Paths, model: WaveRNN, loss_func, optimizer, train_set
                             hp.voc_target, hp.voc_overlap, paths.voc_output)
                 ckpt_name = f'wave_step{k}K'
                 save_checkpoint('voc', paths, model, optimizer,
-                                name=ckpt_name, is_silent=True)
+                                name=ckpt_name, is_silent=True, model_type="wavrnn")
 
             msg = f'| Epoch: {e}/{epochs} ({i}/{total_iters}) | Loss: {avg_loss:.4f} | {speed:.1f} steps/s | Step: {k}k | '
             stream(msg)
 
         # Must save latest optimizer state to ensure that resuming training
         # doesn't produce artifacts
-        save_checkpoint('voc', paths, model, optimizer, is_silent=True)
+        save_checkpoint('voc', paths, model, optimizer, is_silent=True, model_type="wavrnn")
         model.log(paths.voc_log, msg)
         print(' ')
 

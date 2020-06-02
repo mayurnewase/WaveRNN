@@ -142,8 +142,8 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
             loss.backward()
             if hp.tts_clip_grad_norm is not None:
                 grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), hp.tts_clip_grad_norm)
-                if np.isnan(grad_norm):
-                    print('grad_norm was NaN!')
+                #if np.isnan(grad_norm):
+                #    print('grad_norm was NaN!')
 
             optimizer.step()
 
@@ -158,7 +158,7 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
             if step % hp.tts_checkpoint_every == 0:
                 ckpt_name = f'taco_step{k}K'
                 save_checkpoint('tts', paths, model, optimizer,
-                                name=ckpt_name, is_silent=True)
+                                name=ckpt_name, is_silent=True, model_type="taco")
 
             if attn_example in ids:
                 idx = ids.index(attn_example)
@@ -170,7 +170,7 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
 
         # Must save latest optimizer state to ensure that resuming training
         # doesn't produce artifacts
-        save_checkpoint('tts', paths, model, optimizer, is_silent=True)
+        save_checkpoint('tts', paths, model, optimizer, is_silent=True, model_type="taco")
         model.log(paths.tts_log, msg)
         print(' ')
 
