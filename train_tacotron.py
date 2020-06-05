@@ -110,6 +110,9 @@ def main():
 
 
 def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, train_steps, attn_example):
+    print("attention example is ",attn_example)
+
+
     device = next(model.parameters()).device  # use same device as model parameters
 
     for g in optimizer.param_groups: g['lr'] = lr
@@ -124,6 +127,7 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
 
         # Perform 1 epoch
         for i, (x, m, ids, _) in enumerate(train_set, 1):
+            print("ids are ", ids)
 
             x, m = x.to(device), m.to(device)
 
@@ -161,6 +165,7 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
                                 name=ckpt_name, is_silent=True, model_type="taco")
 
             if attn_example in ids:
+                print("----saving spectrogram------")
                 idx = ids.index(attn_example)
                 save_attention(np_now(attention[idx][:, :160]), paths.tts_attention/f'{step}')
                 save_spectrogram(np_now(m2_hat[idx]), paths.tts_mel_plot/f'{step}', 600)
