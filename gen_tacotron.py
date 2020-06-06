@@ -144,6 +144,7 @@ if __name__ == "__main__":
         m = (m + 4) / 8
         np.clip(m, 0, 1, out=m)
         print("mel spectrogram shape is ",m.shape)
+        drive_path = "/content/drive/My Drive/Wavenet Training/taco/spectorgoram/"
         save_spectrogram(np_now(m), drive_path + "inference/" + args.input_text, 600)
 
         if args.vocoder == 'griffinlim':
