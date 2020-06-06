@@ -12,7 +12,7 @@ def ljspeech(path: Union[str, Path]):
 
     with open(csv_file[0], encoding='utf-8') as f :
         for line in f :
-            split = line.split('|')
+            split = line.split(',')
             text_dict[split[0]] = split[-1]
 
     return text_dict
