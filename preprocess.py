@@ -32,7 +32,6 @@ if args.path is None:
 extension = args.extension
 path = args.path
 
-
 def convert_file(path: Path):
     y = load_wav(path)
     peak = np.abs(y).max()
