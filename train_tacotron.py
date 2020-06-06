@@ -165,7 +165,7 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
 
             if attn_example in ids:
                 print("----saving spectrogram------")
-                drive_path = "/content/drive/My Drive/Wavenet Training/taco/spectorgoram/"
+                drive_path = "/content/drive/My Drive/Wavenet Training/taco/spectrogram/"
                 idx = ids.index(attn_example)
                 save_attention(np_now(attention[idx][:, :160]), drive_path + f'{step}_attention.png')
                 save_spectrogram(np_now(m2_hat[idx]), drive_path + f'{step}_spectrogram.png', 600)
