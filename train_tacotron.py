@@ -112,7 +112,6 @@ def main():
 def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, train_steps, attn_example):
     print("attention example is ",attn_example)
 
-
     device = next(model.parameters()).device  # use same device as model parameters
 
     for g in optimizer.param_groups: g['lr'] = lr
@@ -166,9 +165,10 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
 
             if attn_example in ids:
                 print("----saving spectrogram------")
+                drive_path = "/content/drive/My Drive/Wavenet Training/taco/spectorgoram/"
                 idx = ids.index(attn_example)
-                save_attention(np_now(attention[idx][:, :160]), paths.tts_attention/f'{step}')
-                save_spectrogram(np_now(m2_hat[idx]), paths.tts_mel_plot/f'{step}', 600)
+                save_attention(np_now(attention[idx][:, :160]), drive_path/f'{step}_attention')
+                save_spectrogram(np_now(m2_hat[idx]), drive_path + f'{step}_spectrogram', 600)
 
             msg = f'| Epoch: {e}/{epochs} ({i}/{total_iters}) | Loss: {avg_loss:#.4} | {speed:#.2} steps/s | Step: {k}k | '
             stream(msg)

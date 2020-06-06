@@ -143,6 +143,8 @@ if __name__ == "__main__":
         # Fix mel spectrogram scaling to be from 0 to 1
         m = (m + 4) / 8
         np.clip(m, 0, 1, out=m)
+        print("mel spectrogram shape is ",m.shape)
+        save_spectrogram(np_now(m), drive_path + "inference/" + args.input_text, 600)
 
         if args.vocoder == 'griffinlim':
             v_type = args.vocoder
