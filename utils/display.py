@@ -84,7 +84,7 @@ def time_since(started):
 def save_attention(attn, path):
     fig = plt.figure(figsize=(12, 6))
     plt.imshow(attn.T, interpolation='nearest', aspect='auto')
-    fig.savefig(path.parent/f'{path.stem}.png', bbox_inches='tight')
+    fig.savefig(path , bbox_inches='tight')
     plt.close(fig)
 
 
@@ -93,7 +93,7 @@ def save_spectrogram(M, path, length=None):
     if length: M = M[:, :length]
     fig = plt.figure(figsize=(12, 6))
     plt.imshow(M, interpolation='nearest', aspect='auto')
-    fig.savefig(f'{path}.png', bbox_inches='tight')
+    fig.savefig(f'{path}', bbox_inches='tight')
     plt.close(fig)
 
 
