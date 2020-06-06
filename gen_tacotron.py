@@ -9,6 +9,7 @@ from utils.text import text_to_sequence
 from utils.display import save_attention, simple_table
 from utils.dsp import reconstruct_waveform, save_wav
 import numpy as np
+from utils.display import save_spectrogram
 
 if __name__ == "__main__":
 
@@ -116,6 +117,8 @@ if __name__ == "__main__":
     else:
         with open('sentences.txt') as f:
             inputs = [text_to_sequence(l.strip(), hp.tts_cleaner_names) for l in f]
+
+    print("cleaned input text is ", inputs)
 
     if args.vocoder == 'wavernn':
         voc_k = voc_model.get_step() // 1000
