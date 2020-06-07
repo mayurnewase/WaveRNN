@@ -3,7 +3,7 @@
 
 # Here are the input and output data paths (Note: you can override wav_path in preprocess.py)
 wav_path = '/content/WaveRNN/dataset/lj_speech_dataset'
-data_path = '/content/WaveRNN/tacotron_training_one_example_processed'
+data_path = '/content/WaveRNN/wavrnn_preprocessed_second'
 
 # model ids are separate - that way you can use a new tts with an old wavernn and vice versa
 # NB: expect undefined behaviour if models were trained on different DSP settings
