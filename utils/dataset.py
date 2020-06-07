@@ -131,10 +131,10 @@ def get_tts_datasets(path: Path, batch_size, r):
                            num_workers=1,
                            pin_memory=True)
 
-    longest = mel_lengths.index(max(mel_lengths))
+    #longest = mel_lengths.index(max(mel_lengths))
 
     # Used to evaluate attention during training process
-    attn_example = dataset_ids[longest]
+    attn_example = dataset_ids[:10]
 
     # print(attn_example)
 
@@ -150,6 +150,7 @@ class TTSDataset(Dataset):
     def __getitem__(self, index):
         item_id = self.metadata[index]
         x = text_to_sequence(self.text_dict[item_id], hp.tts_cleaner_names)
+        print(">>>input symols is ", x)
         mel = np.load(self.path/'mel'/f'{item_id}.npy')
         mel_len = mel.shape[-1]
         return x, mel, item_id, mel_len
@@ -214,7 +215,7 @@ class BinnedLengthSampler(Sampler):
             bins += [this_bin]
 
         random.shuffle(bins)
-        print("-------bins shape is ", len(bins))
+        #print("-------bins shape is ", len(bins))
         binned_idx = np.stack(bins).reshape(-1)
 
         if len(binned_idx) < len(idx):

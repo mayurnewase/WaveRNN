@@ -10,6 +10,7 @@ from utils.display import save_attention, simple_table
 from utils.dsp import reconstruct_waveform, save_wav
 import numpy as np
 from utils.display import save_spectrogram
+import pickle
 
 if __name__ == "__main__":
 
@@ -149,6 +150,7 @@ if __name__ == "__main__":
         print("mel spectrogram shape is ",m.shape)
         drive_path = "/content/drive/My Drive/Wavenet Training/taco/"
         save_spectrogram(m, drive_path + "inference/" + args.input_text, 600)
+        pickle.dump(m, open(drive_path + "inference/" + args.input_text + ".pkl", "wb"))
 
         if args.vocoder == 'griffinlim':
             v_type = args.vocoder

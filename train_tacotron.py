@@ -126,7 +126,7 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
 
         # Perform 1 epoch
         for i, (x, m, ids, _) in enumerate(train_set, 1):
-            print("ids are ", ids)
+            #print("ids are ", ids)
 
             x, m = x.to(device), m.to(device)
 
@@ -163,19 +163,20 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
                 save_checkpoint('tts', paths, model, optimizer,
                                 name=ckpt_name, is_silent=True, model_type="taco")
 
-            if attn_example in ids:
-                print("----saving spectrogram------")
-                drive_path = "/content/drive/My Drive/Wavenet Training/taco/spectrogram/"
-                idx = ids.index(attn_example)
-                save_attention(np_now(attention[idx][:, :160]), drive_path + f'{step}_attention.png')
-                save_spectrogram(np_now(m2_hat[idx]), drive_path + f'{step}_spectrogram.png', 600)
+            for attn_example_id in attn_example:
+                if attn_example_id in ids:
+                    print(">>>>saving inference of id ", attn_example_id)
+                    drive_path = "/content/drive/My Drive/Wavenet Training/taco/spectrogram/"
+                    idx = ids.index(attn_example)
+                    save_attention(np_now(attention[idx][:, :160]), drive_path + f'{step}_attention.png')
+                    save_spectrogram(np_now(m2_hat[idx]), drive_path + f'{step}_spectrogram.png', 600)
 
             msg = f'| Epoch: {e}/{epochs} ({i}/{total_iters}) | Loss: {avg_loss:#.4} | {speed:#.2} steps/s | Step: {k}k | '
             stream(msg)
 
         # Must save latest optimizer state to ensure that resuming training
         # doesn't produce artifacts
-        save_checkpoint('tts', paths, model, optimizer, is_silent=True, model_type="taco")
+        #save_checkpoint('tts', paths, model, optimizer, is_silent=True, model_type="taco")
         model.log(paths.tts_log, msg)
         print(' ')
 
