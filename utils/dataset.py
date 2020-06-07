@@ -169,8 +169,9 @@ def pad2d(x, max_len):
 
 def collate_tts(batch, r):
 
-    x_lens = [len(x[0]) for x in batch]
-    max_x_len = max(x_lens)
+    x_lens = [len(x[0]) for x in batch]  #USE FIXED MAXLEN.....
+    #max_x_len = max(x_lens)
+    max_x_len = 200
 
     chars = [pad1d(x[0], max_x_len) for x in batch]
     chars = np.stack(chars)
