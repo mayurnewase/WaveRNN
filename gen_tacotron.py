@@ -22,6 +22,9 @@ if __name__ == "__main__":
     parser.add_argument('--force_cpu', '-c', action='store_true', help='Forces CPU-only training, even when in CUDA capable environment')
     parser.add_argument('--hp_file', metavar='FILE', default='hparams.py', help='The file to use for the hyperparameters')
 
+    parser.add_argument('--pad_input',  action="store_true")
+    parser.add_argument('--max_len', type=int)
+
     parser.set_defaults(input_text=None)
     parser.set_defaults(weights_path=None)
 
@@ -119,6 +122,12 @@ if __name__ == "__main__":
         with open('sentences.txt') as f:
             inputs = [text_to_sequence(l.strip(), hp.tts_cleaner_names) for l in f]
 
+    def pad1d(x, max_len):
+      return np.pad(x, (0, max_len - len(x)), mode='constant')
+
+    if args.pad_input:
+      print(">>>padding input")
+      inputs = [pad1d(inputs[0], args.max_len)]
     print("cleaned input text is ", inputs)
 
     if args.vocoder == 'wavernn':
