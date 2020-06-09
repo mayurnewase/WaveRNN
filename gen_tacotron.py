@@ -115,12 +115,16 @@ if __name__ == "__main__":
 
     tts_load_path = tts_weights if tts_weights else paths.tts_latest_weights
     tts_model.load(tts_load_path)
+    
+    print("input text is ", input_text)
 
     if input_text:
         inputs = [text_to_sequence(input_text.strip(), hp.tts_cleaner_names)]
     else:
         with open('sentences.txt') as f:
             inputs = [text_to_sequence(l.strip(), hp.tts_cleaner_names) for l in f]
+
+    print("after sequenceing ", inputs)
 
     def pad1d(x, max_len):
       return np.pad(x, (0, max_len - len(x)), mode='constant')
@@ -142,17 +146,11 @@ if __name__ == "__main__":
                     ('Target Samples', target if batched else 'N/A'),
                     ('Overlap Samples', overlap if batched else 'N/A')])
 
-    elif args.vocoder == 'griffinlim':
-        tts_k = tts_model.get_step() // 1000
-        simple_table([('Tacotron', str(tts_k) + 'k'),
-                    ('r', tts_model.r),
-                    ('Vocoder Type', 'Griffin-Lim'),
-                    ('GL Iters', args.iters)])
-
     for i, x in enumerate(inputs, 1):
 
         print(f'\n| Generating {i}/{len(inputs)}')
         _, m, attention = tts_model.generate(x)
+
         # Fix mel spectrogram scaling to be from 0 to 1
         m = (m + 4) / 8
         np.clip(m, 0, 1, out=m)
@@ -173,7 +171,7 @@ if __name__ == "__main__":
         else:
             save_path = paths.tts_output/f'{i}_{v_type}_{tts_k}k.wav'
 
-        if save_attn: save_attention(attention, save_path)
+        if save_attn: save_attention(attention, drive_path + "inference/" + args.input_text + "_attention")
 
         if args.vocoder == 'wavernn':
             m = torch.tensor(m).unsqueeze(0)
