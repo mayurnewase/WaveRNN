@@ -162,6 +162,8 @@ class TTSDataset(Dataset):
 def pad1d(x, max_len):
     return np.pad(x, (0, max_len - len(x)), mode='constant')
 
+def clip1d(x, max_len):
+  return x[:max_len]
 
 def pad2d(x, max_len):
     return np.pad(x, ((0, 0), (0, max_len - x.shape[-1])), mode='constant')
@@ -171,9 +173,10 @@ def collate_tts(batch, r):
 
     x_lens = [len(x[0]) for x in batch]  #USE FIXED MAXLEN.....
     #max_x_len = max(x_lens)
-    max_x_len = 200
+    max_x_len = 23
 
-    chars = [pad1d(x[0], max_x_len) for x in batch]
+    #chars = [pad1d(x[0], max_x_len) for x in batch]
+    chars = [clip1d(x[0], max_x_len) for x in batch]
     chars = np.stack(chars)
 
     spec_lens = [x[1].shape[-1] for x in batch]

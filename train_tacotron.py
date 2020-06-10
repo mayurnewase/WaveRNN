@@ -127,6 +127,7 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
         # Perform 1 epoch
         for i, (x, m, ids, _) in enumerate(train_set, 1):
             #print("ids are ", ids)
+            #print("input x is ", x)
 
             x, m = x.to(device), m.to(device)
 
@@ -177,7 +178,7 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
         # Must save latest optimizer state to ensure that resuming training
         # doesn't produce artifacts
         #save_checkpoint('tts', paths, model, optimizer, is_silent=True, model_type="taco")
-        model.log(paths.tts_log, msg)
+        #model.log(paths.tts_log, msg)
         print(' ')
 
 
