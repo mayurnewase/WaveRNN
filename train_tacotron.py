@@ -15,7 +15,7 @@ import time
 import numpy as np
 import sys
 from utils.checkpoints import save_checkpoint, restore_checkpoint
-
+import random
 
 def np_now(x: torch.Tensor): return x.detach().cpu().numpy()
 
@@ -127,6 +127,20 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
         # Perform 1 epoch
         for i, (x, m, ids, _) in enumerate(train_set, 1):
             #print("ids are ", ids)
+            #print(">>>input ids ", ids[:5])
+            #print(">>>input to model is \n", x[:5])
+            print("full x shape is ",x.shape)
+
+            no = random.randint(0,10)
+            print_or_not = False
+            #if no>8:
+            #    print_or_not = True
+            
+            if print_or_not:
+                for attn_example_id in attn_example:
+                    if attn_example_id in ids:
+                        print(">>>input inference id ", attn_example_id)
+                        print(">>>input to model is \n", x[ids.index(attn_example_id)])
 
             x, m = x.to(device), m.to(device)
 
@@ -163,13 +177,21 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
                 save_checkpoint('tts', paths, model, optimizer,
                                 name=ckpt_name, is_silent=True, model_type="taco")
 
-                for attn_example_id in attn_example:
-                    if attn_example_id in ids:
-                        print(">>>>saving inference of id ", attn_example_id)
-                        drive_path = "/content/drive/My Drive/Wavenet Training/taco/spectrogram/"
-                        idx = ids.index(attn_example_id)
-                        save_attention(np_now(attention[idx][:, :160]), drive_path + f'{step}_{attn_example_id}_attention.png')
-                        save_spectrogram(np_now(m2_hat[idx]), drive_path + f'{step}_{attn_example_id}_spectrogram.png', 600)
+            for attn_example_id, input_to_model in zip(attn_example, x):
+                if attn_example_id in ids:
+                    print("generating spectrogram for id ",attn_example_id)
+                    print("attentioned x shape is ",input_to_model.shape)
+                    print("input to generaing is ", input_to_model)
+                    _, m, attention = model.generate(input_to_model)
+                    
+                    #m = (m + 4) / 8
+                    #np.clip(m, 0, 1, out=m)
+
+                    print(">>>>saving inference of id ", attn_example_id)
+                    drive_path = "/home/mayur/projects/WaveRNN/model_outputs/ljspeech_lsa_smooth_attention.tacotron/"
+                    idx = ids.index(attn_example_id)
+                    #save_attention(np_now(attention[idx][:, :160]), drive_path + f'{step}_{attn_example_id}_attention.png')
+                    save_spectrogram(m, drive_path + f'{step}_{attn_example_id}_spectrogram.png', 600)
 
             msg = f'| Epoch: {e}/{epochs} ({i}/{total_iters}) | Loss: {avg_loss:#.4} | {speed:#.2} steps/s | Step: {k} | '
             stream(msg)
