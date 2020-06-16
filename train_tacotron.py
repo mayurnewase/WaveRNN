@@ -169,6 +169,7 @@ def tts_train_loop(paths: Paths, model: Tacotron, optimizer, train_set, lr, trai
                         print(">>>>saving inference of id ", attn_example_id)
                         drive_path = "/content/drive/My Drive/Wavenet Training/taco/spectrogram/"
                         idx = ids.index(attn_example_id)
+                        print("infrence input for id ", attn_example_id, "\n", x[idx])
                         save_attention(np_now(attention[idx][:, :160]), drive_path + f'{step}_{attn_example_id}_attention.png')
                         save_spectrogram(np_now(m2_hat[idx]), drive_path + f'{step}_{attn_example_id}_spectrogram.png', 600)
 

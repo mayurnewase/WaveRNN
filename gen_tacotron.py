@@ -119,7 +119,7 @@ if __name__ == "__main__":
     print("input text is ", input_text)
 
     if input_text:
-        inputs = [text_to_sequence(input_text.strip(), hp.tts_cleaner_names)]
+        inputs = [text_to_sequence(input_text, hp.tts_cleaner_names)]
     else:
         with open('sentences.txt') as f:
             inputs = [text_to_sequence(l.strip(), hp.tts_cleaner_names) for l in f]
@@ -156,7 +156,7 @@ if __name__ == "__main__":
         np.clip(m, 0, 1, out=m)
         print("mel spectrogram shape is ",m.shape)
         drive_path = "/content/drive/My Drive/Wavenet Training/taco/"
-        save_spectrogram(m, drive_path + "inference/" + args.input_text, 600)
+        save_spectrogram(m, drive_path + "inference/" + args.input_text.strip(), 600)
         pickle.dump(m, open(drive_path + "inference/" + args.input_text + ".pkl", "wb"))
 
         if args.vocoder == 'griffinlim':
@@ -171,7 +171,7 @@ if __name__ == "__main__":
         else:
             save_path = paths.tts_output/f'{i}_{v_type}_{tts_k}k.wav'
 
-        if save_attn: save_attention(attention, drive_path + "inference/" + args.input_text + "_attention")
+        if save_attn: save_attention(attention, drive_path + "inference/" + args.input_text.replace(".", "").strip() + "_attention")
 
         if args.vocoder == 'wavernn':
             m = torch.tensor(m).unsqueeze(0)
