@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: "template for Lobb-staging"
+
+Parameters:
+    VariableName:
+        Type: String
+        Default: dummy value
+
+    lambdaRoleArn:
+        Type: String
+        Default: arn:aws:iam::752014255238:role/service-role/DynamoRole
+
+Globals:
+  Function:
+    Timeout: 300
+    Runtime: python3.7
+    MemorySize: 512
+
+Resources:
+#    fullCodeLayer:
+#        Type: AWS::Serverless::LayerVersion
+#        Properties:
+#          LayerName: allImports
+#          ContentUri: lambda_layers/full_code/
+ #         CompatibleRuntimes:
+#              - python3.7
+#          LicenseInfo: MIT
+#          RetentionPolicy: Retain
+
+    inference:
+        Type: AWS::Serverless::Function
+        Properties:
+            Tracing: Active
+            CodeUri: ./
+            Handler: lambda_inference.lambda_handler
+            Runtime: python3.7
+#            Layers:
+#            - !Ref fullCodeLayer
+            Role: !Ref lambdaRoleArn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
