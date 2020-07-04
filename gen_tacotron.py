@@ -97,7 +97,6 @@ if __name__ == "__main__":
         voc_model.load(voc_load_path)
 
     print('\nInitialising Tacotron Model...\n')
-
     # Instantiate Tacotron Model
     tts_model = Tacotron(embed_dims=hp.tts_embed_dims,
                          num_chars=len(symbols),

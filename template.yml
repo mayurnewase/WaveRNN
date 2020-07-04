@@ -15,7 +15,7 @@ Globals:
   Function:
     Timeout: 300
     Runtime: python3.7
-    MemorySize: 512
+    MemorySize: 4096
 
 Resources:
 #    fullCodeLayer:
@@ -39,7 +39,9 @@ Resources:
 #            - !Ref fullCodeLayer
             Role: !Ref lambdaRoleArn
 
-
+#sam build -t "$2".yaml
+#sam package --output-template-file packaged.yaml --s3-bucket "$1"
+#sam deploy --confirm-changeset --template-file packaged.yaml --stack-name "$3" --capabilities CAPABILITY_IAM --parameter-overrides $(cat template_params.properties) --s3-bucket "$1"
 
 
 
